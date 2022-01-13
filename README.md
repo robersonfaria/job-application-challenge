@@ -22,3 +22,80 @@ We pay particular attention to the design and structure of the code. For example
 1 Note that there is no guarantee that there are no duplicate records in the source file (there
   are no guaranteed unique (combinations of) properties) - and all duplicates do need to be
   replicated 1-to-1 in the database.
+
+# Run the app
+
+## Requirements
+
+- Docker
+- Laravel Sail([Configuring A Bash Alias](https://laravel.com/docs/8.x/sail#configuring-a-bash-alias))
+
+## Steps to start app
+
+#### Clone the projetc
+```bash
+$ git clone https://github.com/robersonfaria/job-application-challenge.git
+```
+
+#### Copy `.env.example` to `.env`
+```bash
+$ cp .env.example .env
+```
+
+#### Download project dependencies
+```bash
+$ docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v $(pwd):/var/www/html \
+    -w /var/www/html \
+    laravelsail/php81-composer:latest \
+    composer install --ignore-platform-reqs
+```
+#### Run the project's containers.
+
+In the scale parameter, the number of containers that will process the queue can be chosen, the more containers thefaster the processing.
+
+```bash
+$ sail up --scale laravel.queue=8
+```
+
+#### Create the tables in the database
+```bash
+$ sail artisan migrate
+```
+
+```bash
+$ sail up --scale laravel.queue=8
+```
+
+## Steps to run flows
+
+Basic flow, load the challenge.json file and record the data in the database(only people between 18 and 65 years old).
+```bash
+$ sail artisan challenge:process-file 
+```
+
+Basic flow, load the challenge.json file and filter only customers with card number with 3 consecutive equal digits
+```bash
+$ sail artisan challenge:process-file --3digits 
+```
+
+## Extra features
+
+Generate csv, xml or json file with faker data:
+```bash
+$ sail artisan challenge:generate-file --type=csv --records=10 filename
+```
+![Help command to generate file](./docs/generate-file-help.png)
+
+Process other files (non-default):
+```bash
+$ sail artisan challenge:process-file --filename=other_file.csv
+```
+![Help command to process file](./docs/process-file-help.png)
+
+## Run tests and coverage
+```bash
+$ sail composer phpunit
+```
+The coverage report can be consulted at [./coverage/index.html](./coverage/index.html)

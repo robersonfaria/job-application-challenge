@@ -31,7 +31,7 @@ class ProcessFile extends Command
      *
      * @var string
      */
-    protected $description = 'Process the JSON file and persist the data in the database';
+    protected $description = 'Process file and persist the data in the database(json, csv, xml)';
 
     /**
      * Create a new command instance.
