@@ -53,7 +53,8 @@ $ docker run --rm \
 ```
 #### Run the project's containers.
 
-In the scale parameter, the number of containers that will process the queue can be chosen, the more containers thefaster the processing.
+In the scale parameter you can choose the number of containers that will process the queue, the more containers the
+faster the processing.
 
 ```bash
 $ sail up --scale laravel.queue=8
@@ -80,15 +81,15 @@ $ sail artisan challenge:process-file --3digits
 
 Generate csv, xml or json file with faker data:
 ```bash
-$ sail artisan challenge:generate-file --type=csv --records=10 filename
+$ sail artisan challenge:generate-file --records=10 filename.csv
 ```
-![Help command to generate file](./docs/generate-file-help.png)
+![Help command to generate file](./docs/generate-file.png)
 
 Process other files (non-default):
 ```bash
 $ sail artisan challenge:process-file --filename=other_file.csv
 ```
-![Help command to process file](./docs/process-file-help.png)
+![Help command to process file](./docs/process-file.png)
 
 ## Run tests and coverage
 ```bash
