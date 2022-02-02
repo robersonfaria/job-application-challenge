@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Services\Utils\GenerateFile;
+use App\Services\ParseFile\ParseFile;
 use Illuminate\Console\Command;
 
 class GenerateSampleFile extends Command
@@ -13,16 +13,15 @@ class GenerateSampleFile extends Command
      * @var string
      */
     protected $signature = 'challenge:generate-file
-        {--t|type=json : Data format}
         {--r|records=10 : Number of records}
-        {filename : Name of the file to be generated without the extension}';
+        {filename : Name of the file to be generated with extension}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Generate files in json, csv and xml format with fake data';
+    protected $description = 'Generate fake files in json, csv and xml format with fake data';
 
     /**
      * Create a new command instance.
@@ -42,12 +41,8 @@ class GenerateSampleFile extends Command
     public function handle()
     {
         try {
-            $generator = new GenerateFile(
-                $this->option('type'),
-                $this->argument('filename'),
-                $this->option('records')
-            );
-            $generator->run();
+            (new ParseFile($this->argument('filename')))
+                ->generateFile($this->option('records'));
         } catch (\Exception $e) {
             $this->error($e->getMessage());
             $this->error('See log files for details!');

@@ -9,6 +9,12 @@ use pcrov\JsonReader\JsonReader;
 
 class ParseJson implements ParseFileContract
 {
+    use GenerateFakeData;
+
+    /**
+     * @param string $filename
+     * @return LazyCollection
+     */
     public function parse(string $filename): LazyCollection
     {
         $stream = Storage::readStream($filename);
@@ -27,5 +33,20 @@ class ParseJson implements ParseFileContract
         });
     }
 
-
+    /**
+     * @param string $filename
+     * @param int $records
+     * @return bool
+     */
+    public function generate(string $filename, int $records = 10): bool
+    {
+        $data = [];
+        for ($i = 0; $i < $records; $i++) {
+            $customer = $this->getCustomer();
+            $customer['credit_card'] = $this->getCard();
+            $data[] = $customer;
+        }
+        Storage::put($filename, json_encode($data));
+        return true;
+    }
 }

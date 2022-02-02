@@ -15,9 +15,4 @@ class Card extends Model
         "name",
         "expirationDate",
     ];
-
-    public function customer()
-    {
-        return $this->belongsTo(Customer::class);
-    }
 }

@@ -7,6 +7,11 @@ use App\Exceptions\CardWithout3OrMoreConsecutiveSameDigitsException;
 class CardService
 {
 
+    /**
+     * @param $card
+     * @return void
+     * @throws CardWithout3OrMoreConsecutiveSameDigitsException
+     */
     public static function validateExistsConsecutiveSameDigits($card)
     {
         if (hasConsecutiveSameDigits($card) === false) {

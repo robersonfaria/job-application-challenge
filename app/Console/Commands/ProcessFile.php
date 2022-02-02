@@ -40,6 +40,11 @@ class ProcessFile extends Command
      */
     public function __construct()
     {
+        /**
+         * Batch queues first serialize and queue all jobs and then dispatch, if an error occurs in the queue no job is
+         * executed. And because it is a queue, if during the processing of jobs the execution is interrupted, when the
+         * jobs return, the queue will naturally continue to be processed.
+         */
         $this->bus = Bus::batch([]);
         parent::__construct();
     }
@@ -54,13 +59,20 @@ class ProcessFile extends Command
         try {
             $this->info('Starting batch creation.');
 
-            $service = new ParseFile($this->option('file'));
-            $service->parse()
-                ->unique()
+            (new ParseFile($this->option('file')))
+                ->parse()
+                ->unique() // filter unique registers
                 ->each(function ($data) {
+                    /**
+                     * For each line of the file to be processed, a job will be scheduled.
+                     */
                     $this->bus->add([new ProcessCustomer($data, $this->option('3digits'))]);
                 });
+            /**
+             * Only after all jobs are queued is processing dispatched.
+             */
             $this->bus->dispatch();
+
             $this->info('Batch creation completed, starting data processing (queued)');
         } catch (\Exception $e) {
             $this->error($e->getMessage());

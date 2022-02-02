@@ -26,26 +26,17 @@ class Customer extends Model
         "date_of_birth" => "date"
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function cards()
     {
         return $this->hasMany(Card::class);
     }
 
-    public function setDateOfBirthAttribute($value)
-    {
-        try {
-            if (!empty($value)) {
-                $this->attributes['date_of_birth'] = Carbon::parse($value)->startOfDay();
-            }
-        } catch (\Exception $e) {
-            if (preg_match('/^(\d{2})\/(\d{2})\/(\d{4})$/', $value)) {
-                $this->attributes['date_of_birth'] = Carbon::createFromFormat('d/m/Y', $value)->startOfDay();
-            } else {
-                throw $e;
-            }
-        }
-    }
-
+    /**
+     * @return int|null
+     */
     public function getAgeAttribute(): int|null
     {
         return $this->date_of_birth->age ?? null;

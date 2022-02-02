@@ -40,14 +40,4 @@ class CustomerAgeTest extends TestCase
 
         CustomerService::validateAgeRange($customer);
     }
-
-    public function test_invalid_format_date()
-    {
-        $date = '20/11/2022';
-        $customer = Customer::factory()->state([
-            'date_of_birth' => $date
-        ])->make();
-
-        $this->assertEquals(Carbon::createFromFormat('d/m/Y', $date)->startOfDay(), $customer->date_of_birth);
-    }
 }

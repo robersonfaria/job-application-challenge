@@ -14,16 +14,16 @@ class GenerateFileCommandTest extends TestCase
 
     public function test_command()
     {
-        $this->artisan('challenge:generate-file -t json -r 3 test')->assertExitCode(0);
+        $this->artisan('challenge:generate-file -r 3 test.json')->assertExitCode(0);
 
         $this->assertFileExists(Storage::path('test.json'));
 
         Storage::delete('test.json');
     }
 
-    public function test_fail_command()
+    public function test_invalid_extension_command()
     {
-        $this->artisan('challenge:generate-file -t doc -r 3 test')->assertExitCode(0);
+        $this->artisan('challenge:generate-file -r 3 test.doc')->assertExitCode(0);
 
         $this->assertFileDoesNotExist(Storage::path('test.doc'));
     }

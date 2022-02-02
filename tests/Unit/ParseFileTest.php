@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\Services\ParseFile\Adapters\ParseXml;
-use App\Services\Utils\GenerateFile;
 use App\Services\ParseFile\ParseFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -13,10 +12,9 @@ class ParseFileTest extends TestCase
 
     public function test_parse_json_file()
     {
-        $generator = new GenerateFile('json', 'test', 1);
-        $generator->run();
-
         $parser = new ParseFile('test.json');
+        $parser->generateFile(1);
+
         $this->assertEquals(1, $parser->parse()->count());
 
         Storage::delete('test.json');
@@ -24,10 +22,9 @@ class ParseFileTest extends TestCase
 
     public function test_parse_csv_file()
     {
-        $generator = new GenerateFile('csv', 'test', 1);
-        $generator->run();
-
         $parser = new ParseFile('test.csv');
+        $parser->generateFile(1);
+
         $this->assertEquals(1, $parser->parse()->count());
 
         Storage::delete('test.csv');
@@ -35,10 +32,9 @@ class ParseFileTest extends TestCase
 
     public function test_parse_xml_file()
     {
-        $generator = new GenerateFile('xml', 'test', 1);
-        $generator->run();
-
         $parser = new ParseFile('test.xml');
+        $parser->generateFile(1);
+
         $this->assertEquals(1, $parser->parse()->count());
 
         Storage::delete('test.xml');
@@ -69,11 +65,10 @@ class ParseFileTest extends TestCase
 
     public function test_parse_with_use_adapater()
     {
-        $generator = new GenerateFile('xml', 'test', 3);
-        $generator->run();
-
         $parser = new ParseFile('test.xml');
         $parser->setAdapter(new ParseXml());
+        $parser->generateFile(3);
+
         $this->assertEquals(3, $parser->parse()->count());
 
         Storage::delete('test.xml');

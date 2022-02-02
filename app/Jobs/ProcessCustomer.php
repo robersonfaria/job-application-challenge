@@ -22,18 +22,23 @@ class ProcessCustomer implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Batchable;
 
-    private $data;
     /**
-     * @var false
+     * @var array
      */
-    private $onlyWith3ConsecutiveSameDigits;
+    private $data;
+
+    /**
+     * @var bool
+     */
+    private bool $onlyWith3ConsecutiveSameDigits;
 
     /**
      * Create a new job instance.
      *
-     * @return void
+     * @param array $data
+     * @param bool $onlyWith3ConsecutiveSameDigits
      */
-    public function __construct($data, $onlyWith3ConsecutiveSameDigits = false)
+    public function __construct(array $data, bool $onlyWith3ConsecutiveSameDigits = false)
     {
         $this->data = $data;
         $this->onlyWith3ConsecutiveSameDigits = $onlyWith3ConsecutiveSameDigits;
@@ -43,19 +48,28 @@ class ProcessCustomer implements ShouldQueue, ShouldBeUnique
      * Execute the job.
      *
      * @return void
+     * @throws AgeRangeNotAllowedException
+     * @throws CardWithout3OrMoreConsecutiveSameDigitsException
      */
     public function handle()
     {
         DB::beginTransaction();
         try {
+            /**
+             * fill model objects
+             */
             $customer = new Customer($this->data);
             $card = new Card($this->data['credit_card']);
 
+            /**
+             * Validate data
+             *
+             * If necessary more rules can be added
+             */
             CustomerService::validateAgeRange($customer);
             if ($this->onlyWith3ConsecutiveSameDigits) {
                 CardService::validateExistsConsecutiveSameDigits($card);
             }
-            // If necessary more rules can be added
 
             $customer->save();
             $customer->cards()->save($card);
