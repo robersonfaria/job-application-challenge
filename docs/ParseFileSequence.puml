@@ -1,0 +1,27 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+actor User
+control "ProcessFile\nCommand" as ProcessFile
+control ParseFile
+queue "Default\nQueue" as DefaultQueue
+control ProcessCustomerJob
+database DB
+
+User -> ProcessFile: Inform file name
+ProcessFile -> ParseFile: Read file and convert\n data into array
+ParseFile -> DefaultQueue: Process queue only\nafter all queued records
+DefaultQueue -> User: Informs the user that all data has been read\nand will be processed in the background
+    loop
+        DefaultQueue -> ProcessCustomerJob: Read the array and validate the data
+        ProcessCustomerJob -> DB:persist in the database
+        note left
+            If an error occurs during
+            the processing of the queue,
+            when the system resets the
+            processing is resumed
+        end note
+    end
+ParseFile X-> User: If an error occurs before queuing\nall records, nothing is processed
+
+@enduml

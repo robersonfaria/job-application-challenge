@@ -1,0 +1,27 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class ParseFile {
+    - string $filename;
+    - ParseFileContract $adapter;
+    + _construct(string $filename)
+    + parse(): LazyCollection
+    + generateFile(int $records = 10): bool
+    + setAdapter(ParseFileContract $adapter = null): self
+    # getAdapter(): ParseFileContract
+    # getGenerateAdapter(): ParseFileContract
+}
+interface ParseFileContract {
+    +parse(string $filename): LazyCollection
+    +generate(string $filename, int $records = 10): bool
+}
+
+class ParseCsv implements ParseFileContract
+class ParseJson implements ParseFileContract
+class ParseXML implements ParseFileContract
+
+ParseFile --> ParseFileContract
+
+
+
+@enduml

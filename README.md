@@ -96,3 +96,9 @@ $ sail artisan challenge:process-file --filename=other_file.csv
 $ sail composer phpunit
 ```
 The coverage report can be consulted at [./coverage/index.html](./coverage/index.html)
+
+# UML
+
+![ParseFileClass](./docs/ParseFileClass.png)
+
+![ParseFileSequence](./docs/ParseFileSequence.png)

@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\ProcessCustomer;
+use App\Jobs\ProcessCustomerJob;
 use App\Services\ParseFile\ParseFile;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Bus;
@@ -66,7 +66,7 @@ class ProcessFile extends Command
                     /**
                      * For each line of the file to be processed, a job will be scheduled.
                      */
-                    $this->bus->add([new ProcessCustomer($data, $this->option('3digits'))]);
+                    $this->bus->add([new ProcessCustomerJob($data, $this->option('3digits'))]);
                 });
             /**
              * Only after all jobs are queued is processing dispatched.

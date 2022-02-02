@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\Exceptions\AgeRangeNotAllowedException;
-use App\Jobs\ProcessCustomer;
+use App\Jobs\ProcessCustomerJob;
 use App\Models\Customer;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -33,7 +33,7 @@ class ProcessCustomerTest extends TestCase
                 "expirationDate" => "12\/19"
             ]
         ];
-        ProcessCustomer::dispatch($data);
+        ProcessCustomerJob::dispatch($data);
 
         $this->assertDatabaseHas(Customer::class, ['email' => $data['email']]);
     }
@@ -58,6 +58,6 @@ class ProcessCustomerTest extends TestCase
         ];
         $this->expectException(AgeRangeNotAllowedException::class);
 
-        ProcessCustomer::dispatch($data);
+        ProcessCustomerJob::dispatch($data);
     }
 }

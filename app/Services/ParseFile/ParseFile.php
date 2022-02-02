@@ -104,7 +104,7 @@ class ParseFile
      * @return ParseFileContract
      * @throws Exception
      */
-    private function getGenerateAdapter(): ParseFileContract
+    protected function getGenerateAdapter(): ParseFileContract
     {
         /**
          * In this method, I use a different approach to identify the correct adapter for file generation.
