@@ -29,7 +29,7 @@ class CustomerFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                "date_of_birth" => $this->faker->dateTimeBetween( '-64 years', '-19 years')
+                "date_of_birth" => $this->faker->dateTimeBetween( '18 years', '65 years')
             ];
         });
     }

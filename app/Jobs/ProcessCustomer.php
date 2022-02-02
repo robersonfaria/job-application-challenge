@@ -46,6 +46,7 @@ class ProcessCustomer implements ShouldQueue, ShouldBeUnique
      */
     public function handle()
     {
+        DB::beginTransaction();
         try {
             $customer = new Customer($this->data);
             $card = new Card($this->data['credit_card']);
@@ -56,15 +57,12 @@ class ProcessCustomer implements ShouldQueue, ShouldBeUnique
             }
             // If necessary more rules can be added
 
-            DB::beginTransaction();
             $customer->save();
             $customer->cards()->save($card);
             DB::commit();
-        } catch (AgeRangeNotAllowedException | CardWithout3OrMoreConsecutiveSameDigitsException $e) {
-            return; // It only interrupts the processing of this customer
         } catch (\Exception $e) {
             DB::rollBack();
-            report($e);
+            throw $e;
         }
     }
 }

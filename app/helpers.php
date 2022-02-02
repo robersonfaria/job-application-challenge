@@ -1,5 +1,4 @@
 <?php
-
 if (!function_exists('hasConsecutiveSameDigits')) {
     function hasConsecutiveSameDigits($number)
     {

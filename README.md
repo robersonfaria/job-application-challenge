@@ -64,10 +64,6 @@ $ sail up --scale laravel.queue=8
 $ sail artisan migrate
 ```
 
-```bash
-$ sail up --scale laravel.queue=8
-```
-
 ## Steps to run flows
 
 Basic flow, load the challenge.json file and record the data in the database(only people between 18 and 65 years old).

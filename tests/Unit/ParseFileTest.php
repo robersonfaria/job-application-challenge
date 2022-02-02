@@ -2,8 +2,9 @@
 
 namespace Tests\Unit;
 
+use App\Services\ParseFile\Adapters\ParseXml;
 use App\Services\Utils\GenerateFile;
-use App\Services\Utils\ParseFile;
+use App\Services\ParseFile\ParseFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
@@ -64,5 +65,17 @@ class ParseFileTest extends TestCase
         $parser->parse();
 
         Storage::delete('test.txt');
+    }
+
+    public function test_parse_with_use_adapater()
+    {
+        $generator = new GenerateFile('xml', 'test', 3);
+        $generator->run();
+
+        $parser = new ParseFile('test.xml');
+        $parser->setAdapter(new ParseXml());
+        $this->assertEquals(3, $parser->parse()->count());
+
+        Storage::delete('test.xml');
     }
 }

@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Exceptions\CardWithout3OrMoreConsecutiveSameDigitsException;
 
-abstract class CardService
+class CardService
 {
 
     public static function validateExistsConsecutiveSameDigits($card)

@@ -46,11 +46,8 @@ class Customer extends Model
         }
     }
 
-    public function getAgeAttribute()
+    public function getAgeAttribute(): int|null
     {
-        if (empty($this->date_of_birth)) {
-            return false;
-        }
-        return $this->date_of_birth->age;
+        return $this->date_of_birth->age ?? null;
     }
 }

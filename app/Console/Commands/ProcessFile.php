@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Jobs\ProcessCustomer;
-use App\Services\Utils\ParseFile;
+use App\Services\ParseFile\ParseFile;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Bus;
 
